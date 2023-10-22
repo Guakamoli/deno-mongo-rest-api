@@ -1,0 +1,29 @@
+{
+  "imports": {
+    "@/": "./src/",
+    "oak": "https://deno.land/x/oak@v11.1.0/mod.ts",
+    "oak/cors": "https://deno.land/x/cors@v1.2.2/mod.ts",
+    "dotenv": "https://deno.land/x/dotenv@v3.2.0/mod.ts",
+    "base64": "https://deno.land/std@0.152.0/encoding/base64.ts",
+    "zod": "https://deno.land/x/zod@v3.19.1/mod.ts",
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.0/mod.ts",
+    "djwt": "https://deno.land/x/djwt@v2.7/mod.ts",
+    "mongodb": "npm:mongodb@5.7.0"
+  },
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-write --allow-sys --allow-env --watch src/main.ts",
+    "start": "deno run --allow-net --allow-read --allow-write --allow-sys --allow-env src/main.ts",
+    "cache": "deno cache --import-map=deno.jsonc src/main.ts --reload",
+    "cache:force": "deno cache --import-map=deno.jsonc src/main.ts --reload --lock-write",
+    "compile": "deno compile --allow-net --allow-read --allow-write --allow-sys --allow-env --target x86_64-unknown-linux-gnu --output build/deno-mongo-rest-api src/main.ts"
+  },
+  "fmt": {
+    "lineWidth": 80,
+    "indentWidth": 2,
+    "proseWrap": "preserve",
+    "semiColons": true,
+    "include": [
+      "src/"
+    ]
+  }
+}

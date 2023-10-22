@@ -1,11 +1,10 @@
-import type { RouterContext } from '../deps.ts';
-import { Bson } from '../deps.ts';
-import type { CreateUserInput, LoginUserInput } from '../schema/user.schema.ts';
-import { User } from '../models/user.model.ts';
-import { hashPassword, comparePasswords } from '../utils/password.ts';
-import { signJwt } from '../utils/jwt.ts';
-import omitFields from '../utils/omitfields.ts';
-import config from '../config/default.ts';
+import type { RouterContext } from "oak";
+import type { CreateUserInput, LoginUserInput } from "@/schema/user.schema.ts";
+import { User } from "@/models/user.model.ts";
+import { comparePasswords, hashPassword } from "@/utils/password.ts";
+import { signJwt } from "@/utils/jwt.ts";
+import omitFields from "@/utils/omitfields.ts";
+import config from "@/config.ts";
 
 const signUpUserController = async ({
   request,
@@ -18,8 +17,8 @@ const signUpUserController = async ({
     if (userExists) {
       response.status = 409;
       response.body = {
-        status: 'fail',
-        message: 'User with that email already exists',
+        status: "fail",
+        message: "User with that email already exists",
       };
       return;
     }
@@ -28,11 +27,11 @@ const signUpUserController = async ({
     const createdAt = new Date();
     const updatedAt = createdAt;
 
-    const userId: string | Bson.ObjectId = await User.insertOne({
+    const { insertedId: userId } = await User.insertOne({
       name,
       email,
       password: hashedPassword,
-      role: 'user',
+      role: "user",
       verified: true,
       createdAt,
       updatedAt,
@@ -40,7 +39,7 @@ const signUpUserController = async ({
 
     if (!userId) {
       response.status = 500;
-      response.body = { status: 'error', message: 'Error creating user' };
+      response.body = { status: "error", message: "Error creating user" };
       return;
     }
 
@@ -48,12 +47,12 @@ const signUpUserController = async ({
 
     response.status = 201;
     response.body = {
-      status: 'success',
-      user: omitFields(user, 'password', 'verified'),
+      status: "success",
+      user: omitFields(user, "password", "verified"),
     };
   } catch (error) {
     response.status = 500;
-    response.body = { status: 'error', message: error.message };
+    response.body = { status: "error", message: error.message };
     return;
   }
 };
@@ -66,7 +65,7 @@ const loginUserController = async ({
   try {
     const { email, password }: LoginUserInput = await request.body().value;
 
-    const message = 'Invalid email or password';
+    const message = "Invalid email or password";
     const userExists = await User.findOne({ email });
     if (
       !userExists ||
@@ -74,7 +73,7 @@ const loginUserController = async ({
     ) {
       response.status = 401;
       response.body = {
-        status: 'fail',
+        status: "fail",
         message,
       };
       return;
@@ -85,7 +84,7 @@ const loginUserController = async ({
       expiresIn: config.jwtExpiresIn,
       secretKey: config.jwtSecret,
     });
-    cookies.set('token', token, {
+    cookies.set("token", token, {
       expires: new Date(Date.now() + config.jwtExpiresIn * 60 * 1000),
       maxAge: config.jwtExpiresIn * 60,
       httpOnly: true,
@@ -93,22 +92,22 @@ const loginUserController = async ({
     });
 
     response.status = 200;
-    response.body = { status: 'success', token };
+    response.body = { status: "success", token };
   } catch (error) {
     response.status = 500;
-    response.body = { status: 'error', message: error.message };
+    response.body = { status: "error", message: error.message };
     return;
   }
 };
 
 const logoutController = ({ response, cookies }: RouterContext<string>) => {
-  cookies.set('token', '', {
+  cookies.set("token", "", {
     httpOnly: true,
     secure: false,
     maxAge: -1,
   });
 
   response.status = 200;
-  response.body = { status: 'success' };
+  response.body = { status: "success" };
 };
 export default { signUpUserController, loginUserController, logoutController };

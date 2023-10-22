@@ -1,5 +1,5 @@
-import { db } from '../utils/connectDB.ts';
-import { ObjectId } from '../deps.ts';
+import { db } from "@/utils/connectDB.ts";
+import { ObjectId } from "mongodb";
 
 export interface PostSchema {
   _id?: ObjectId;
@@ -12,4 +12,4 @@ export interface PostSchema {
   updatedAt: Date;
 }
 
-export const Post = db.collection<PostSchema>('posts');
+export const Post = db.collection<PostSchema>("posts");

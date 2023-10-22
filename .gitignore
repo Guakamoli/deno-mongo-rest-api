@@ -1,0 +1,10 @@
+# dotenv environment variables file
+.env
+.env.local
+
+# rest-client file
+*.http
+*.rest
+
+# Deno compile output
+build/

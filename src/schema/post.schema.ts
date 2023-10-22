@@ -1,18 +1,18 @@
-import { z } from '../deps.ts';
+import { z } from "zod";
 
 export const createPostSchema = z.object({
   body: z.object({
     title: z.string({
-      required_error: 'Title is required',
+      required_error: "Title is required",
     }),
     content: z.string({
-      required_error: 'Content is required',
+      required_error: "Content is required",
     }),
     category: z.string({
-      required_error: 'Category is required',
+      required_error: "Category is required",
     }),
     image: z.string({
-      required_error: 'Image is required',
+      required_error: "Image is required",
     }),
   }),
 });
@@ -43,7 +43,7 @@ export const deletePostSchema = z.object({
   ...params,
 });
 
-export type CreatePostInput = z.TypeOf<typeof createPostSchema>['body'];
-export type GetPostInput = z.TypeOf<typeof getPostSchema>['params'];
+export type CreatePostInput = z.TypeOf<typeof createPostSchema>["body"];
+export type GetPostInput = z.TypeOf<typeof getPostSchema>["params"];
 export type UpdatePostInput = z.TypeOf<typeof updatePostSchema>;
-export type DeletePostInput = z.TypeOf<typeof deletePostSchema>['params'];
+export type DeletePostInput = z.TypeOf<typeof deletePostSchema>["params"];

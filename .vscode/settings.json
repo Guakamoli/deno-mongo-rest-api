@@ -1,4 +1,11 @@
 {
   "deno.enable": true,
-  "deno.unstable": true
+  "deno.unstable": true,
+  "editor.formatOnSave": true,
+  "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[typescript]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+  }
 }

@@ -1,4 +1,5 @@
-import { z, RouterContext, helpers } from '../deps.ts';
+import { z } from "zod";
+import { helpers, RouterContext } from "oak";
 
 const validate =
   (schema: z.AnyZodObject) =>
@@ -15,7 +16,7 @@ const validate =
       if (err instanceof z.ZodError) {
         ctx.response.status = 400;
         ctx.response.body = {
-          status: 'fail',
+          status: "fail",
           error: err.errors,
         };
         return;

@@ -1,4 +1,4 @@
-import { dotenvConfig } from "../deps.ts";
+import { config as dotenvConfig } from "dotenv";
 dotenvConfig({ export: true, path: ".env" });
 
 const config: {
